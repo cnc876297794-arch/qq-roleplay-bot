@@ -36,5 +36,7 @@ jobs:
         env:
           DEEPSEEK_API_KEY: "sk-test-placeholder"
         run: |
-          python -c "from plugins.roleplay import config; print('config OK')"
-          python -c "from plugins.roleplay import ai_client; print('ai_client OK')"
+          # 必须先 nonebot.init() 否则 plugins/roleplay/__init__.py 模块级
+          # 调用 get_driver() 会抛 "NoneBot has not been initialized."
+          python -c "import nonebot; nonebot.init(); from plugins.roleplay import config; print('config OK')"
+          python -c "import nonebot; nonebot.init(); from plugins.roleplay import ai_client; print('ai_client OK')"
