@@ -546,7 +546,7 @@ async def handle_private_message(bot: Bot, event: PrivateMessageEvent):
         logger.debug(f"[BotFilter] 屏蔽机器人私聊: user_id={user_id}")
         return
 
-    content = await extract_text_from_message(event.message, group_id=group_id, bot=bot)
+    content = await extract_text_from_message(event.message, group_id=PRIVATE_GROUP_ID, bot=bot)
 
     if not content:
         return
