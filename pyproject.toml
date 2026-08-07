@@ -1,4 +1,4 @@
-﻿[build-system]
+[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
@@ -44,3 +44,30 @@ Issues = "https://github.com/cnc876297794-arch/qq-roleplay-bot/issues"
 plugins = []
 plugin_dirs = ["plugins"]
 builtin_plugins = ["echo"]
+
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = [
+    "venv",
+    ".venv",
+    "build",
+    "dist",
+    "napcat",
+    "napcat_data",
+    "characters",
+    "data",
+]
+
+[tool.ruff.lint]
+# E/F/UP/I 是核心,W 是复杂警告
+select = ["E", "F", "UP", "I", "W"]
+# 争议性 / 改起来风险高 / 项目里没必要严格的规则,直接禁用
+ignore = [
+    "E501",  # 行太长 (Chinese comments + 复杂 prompt 模板很难控制)
+    "E402",  # 模块级 import 不在文件顶部 (允许 lazy import)
+    "E741",  # 变量名歧义 (项目里 "l" 是允许的)
+    "F401",  # 未使用 import (--fix 修,但允许 noqa 显式标记)
+    "F841",  # 未使用变量 (debug 时常见)
+]

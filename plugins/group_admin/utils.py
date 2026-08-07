@@ -7,24 +7,25 @@ group_admin 工具函数
 """
 
 import re
+
 from nonebot.adapters.onebot.v11 import Message
 
 
 def parse_duration(text: str) -> int:
     """
     解析时间字符串为秒数
-    
+
     支持格式：
     - 10s -> 10秒
     - 10m -> 10分钟
     - 1h -> 1小时
     - 1d -> 1天
-    
+
     默认：10分钟 (600秒)
     """
     if not text:
         return 600
-    
+
     text = text.strip().lower()
     match = re.match(r'^(\d+)([smhd])$', text)
     if not match:
@@ -32,7 +33,7 @@ def parse_duration(text: str) -> int:
         if text.isdigit():
             return int(text) * 60
         return 600
-    
+
     num, unit = int(match.group(1)), match.group(2)
     multipliers = {'s': 1, 'm': 60, 'h': 3600, 'd': 86400}
     return num * multipliers.get(unit, 60)
@@ -63,10 +64,10 @@ def format_duration(seconds: int) -> str:
 def extract_at_users(message: Message) -> list[int]:
     """
     从消息中提取所有 @ 的用户 ID
-    
+
     Args:
         message: OneBot Message 对象
-    
+
     Returns:
         list[int]: 用户 ID 列表
     """

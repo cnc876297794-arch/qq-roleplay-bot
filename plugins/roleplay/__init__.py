@@ -16,38 +16,36 @@ import re
 import time
 from pathlib import Path
 
-from nonebot import on_message, get_driver, require, get_bot
-from nonebot.adapters.onebot.v11 import (
-    GroupMessageEvent, PrivateMessageEvent, Bot, MessageSegment
-)
-from nonebot.rule import to_me
+from nonebot import get_bot, get_driver, on_message, require
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent, MessageSegment, PrivateMessageEvent
 from nonebot.log import logger
+from nonebot.rule import to_me
 
-from .config import BotConfig
+from . import consciousness as cs
 from . import database as db
 from .ai_client import AIClient
-from .reply_decider import ReplyDecider
-from .message_processor import (
-    extract_text_from_message,
-    process_group_message,
-    resolve_display_name,
-)
-from .topic_tracker import (
-    process_unprocessed_for_topics,
-    generate_topic_summary,
-)
-from .personality_engine import (
-    batch_update_personalities,
-    update_member_personality,
-)
-from . import consciousness as cs
+from .character_runtime import build_private_runtime_messages, build_runtime_messages
+from .config import BotConfig
 from .consciousness import (
     ConsciousState,
     is_consciousness_enabled,
     run_memory_decay,
     run_reflection,
 )
-from .character_runtime import build_runtime_messages, build_private_runtime_messages
+from .message_processor import (
+    extract_text_from_message,
+    process_group_message,
+    resolve_display_name,
+)
+from .personality_engine import (
+    batch_update_personalities,
+    update_member_personality,
+)
+from .reply_decider import ReplyDecider
+from .topic_tracker import (
+    generate_topic_summary,
+    process_unprocessed_for_topics,
+)
 
 
 # ─── 消息分段发送工具 ────────────────────────────
@@ -288,6 +286,7 @@ def _register_scheduled_tasks():
 
 async def _get_active_group_ids() -> list[int]:
     import aiosqlite
+
     from .database import DB_PATH
     try:
         async with aiosqlite.connect(str(DB_PATH)) as conn:

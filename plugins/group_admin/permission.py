@@ -6,9 +6,9 @@ group_admin 权限检查工具
 """
 
 from functools import wraps
+
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 from nonebot.log import logger
-
 
 # 权限层级定义
 ROLE_LEVEL = {
@@ -21,7 +21,7 @@ ROLE_LEVEL = {
 def require_admin(func):
     """
     装饰器：要求执行者必须是群主或管理员
-    
+
     Usage:
         @require_admin
         async def handle_command(bot, event):
@@ -52,24 +52,24 @@ def require_owner(func):
 def can_target(admin_role: str, target_id: int, bot: Bot, group_id: int) -> bool:
     """
     检查管理员是否有权限对目标用户执行操作
-    
+
     规则：
     - 群主可以操作任何人（包括管理员）
     - 管理员不能操作群主或其他管理员
     - 普通成员不能操作任何人
-    
+
     Args:
         admin_role: 执行者的角色 ("owner", "admin", "member")
         target_id: 目标用户 QQ
         bot: Bot 实例
         group_id: 群号
-    
+
     Returns:
         bool: 是否有权限操作
     """
     if admin_role == "owner":
         return True
-    
+
     if admin_role == "admin":
         # 管理员不能操作群主或其他管理员
         # 需要获取目标用户的权限信息
@@ -84,10 +84,10 @@ def can_target(admin_role: str, target_id: int, bot: Bot, group_id: int) -> bool
 def get_role_level(role: str) -> int:
     """
     获取角色等级
-    
+
     Args:
         role: 角色字符串
-    
+
     Returns:
         int: 等级值，越大权限越高
     """

@@ -7,8 +7,8 @@ personality_engine.py - 性格学习引擎
 """
 
 import json
-import time
 import logging
+import time
 from collections import Counter
 from typing import Optional
 
@@ -134,7 +134,7 @@ def infer_tags_from_features(features: dict) -> dict:
     game_words = {"游戏", "王者", "原神", "LOL", "steam", "抽卡", "攻略", "段位", "崩铁",
                   "星铁", "铁道", "鸣潮", "绝区零", "方舟", "碧蓝", "明日方舟", "崩坏",
                   "提瓦特", "深渊", "排位", "副本", "boss", "伤害", "大招", "技能",
-                  "老婆", "老公", "老婆", "老婆", "今日", "打卡", "皮肤", "限定", "卡池"}
+                  "老婆", "老公", "今日", "打卡", "皮肤", "限定", "卡池"}
     tech_words = {"代码", "编程", "python", "bug", "电脑", "AI", "服务器", "模型",
                   "训练", "部署", "API", "接口", "前端", "后端"}
     anime_words = {"二次元", "动漫", "番剧", "cos", "漫画", "轻小说", "米哈游",
@@ -263,13 +263,13 @@ async def batch_update_personalities(group_id: int, ai_client=None,
     批量更新最近活跃成员的性格（每小时一次）。
     从最近 100 条消息中取发言最多的用户，而非按总活跃度排序。
     节省 token，确保只更新最近说过话的人。
-    
+
     Returns: 更新的用户数
     """
     members = await db.get_recent_message_users(group_id, limit=100)
     members = members[:max_users]
     updated = 0
-    
+
     for member in members:
         user_id = member.get("user_id")
         nickname = member.get("nickname", "未知")
@@ -279,5 +279,5 @@ async def batch_update_personalities(group_id: int, ai_client=None,
                 updated += 1
             except Exception as e:
                 logger.error(f"[Personality Batch Error] user={user_id}: {e}")
-    
+
     return updated

@@ -7,8 +7,8 @@ topic_tracker.py - 话题跟踪引擎
 """
 
 import json
-import time
 import logging
+import time
 
 logger = logging.getLogger(__name__)
 from collections import Counter
@@ -36,7 +36,7 @@ def extract_topic_keywords(texts: list[str], top_k: int = 8) -> list[str]:
 
 
 def match_existing_topic(new_keywords: list[str], existing_topics: list[dict],
-                          threshold: int = 2) -> Optional[int]:
+                          threshold: int = 2) -> int | None:
     """
     判断新消息关键词是否匹配已有话题。
     返回匹配的话题ID，无匹配返回None。
@@ -63,7 +63,7 @@ def match_existing_topic(new_keywords: list[str], existing_topics: list[dict],
 async def process_unprocessed_for_topics(group_id: int, batch_size: int = 50) -> dict:
     """
     本地处理未分析的消息，提取/更新话题（0 token）。
-    
+
     Returns: {"processed": int, "new_keywords": list, "matched_topic": int|None}
     """
     messages = await db.get_unprocessed_messages(group_id, limit=batch_size)

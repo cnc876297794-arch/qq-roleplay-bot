@@ -18,8 +18,8 @@ except ImportError:
     logger.setLevel(logging.INFO)
 
 try:
+    from watchdog.events import FileModifiedEvent, FileSystemEventHandler
     from watchdog.observers import Observer
-    from watchdog.events import FileSystemEventHandler, FileModifiedEvent
     _WATCHDOG_AVAILABLE = True
 except ImportError:
     _WATCHDOG_AVAILABLE = False

@@ -6,6 +6,7 @@ group_admin 配置管理
 
 from pathlib import Path
 from typing import Any
+
 import yaml
 
 _CONFIG_PATH = Path(__file__).resolve().parent.parent.parent / "config" / "admin.yaml"
@@ -44,7 +45,7 @@ class AdminConfig:
         """加载配置文件，不存在则使用默认值"""
         if _CONFIG_PATH.exists():
             try:
-                with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+                with open(_CONFIG_PATH, encoding="utf-8") as f:
                     loaded = yaml.safe_load(f) or {}
                     return self._merge_defaults(loaded)
             except Exception:

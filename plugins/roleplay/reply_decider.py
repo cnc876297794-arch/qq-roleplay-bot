@@ -120,7 +120,7 @@ class ReplyDecider:
         """强制重置当前时段计数（供定时任务精确刷新时调用）。"""
         self._check_period_reset()  # 先同步时段
         self.period_reply_count.clear()
-    
+
     def should_reply(self, group_id: int, is_at_me: bool = False,
                      content_length: int = 0, sender_activity: float = 0.5,
                      user_id: int = 0) -> bool:
@@ -147,7 +147,7 @@ class ReplyDecider:
             self.last_at_time[(group_id, user_id)] = now
             self._record_reply(group_id)
             return True
-            
+
         self._check_period_reset()
 
         # Rule 2: cooldown check
@@ -159,7 +159,7 @@ class ReplyDecider:
         # Rule 3: period limit
         if self.period_reply_count.get(group_id, 0) >= self.period_quota:
             return False
-        
+
         # Rule 4: probability + dynamic adjustments
         # per-group base (注册覆盖 > 默认兜底)
         prob = self.get_group_probability(group_id)
@@ -177,7 +177,7 @@ class ReplyDecider:
             return True
 
         return False
-    
+
     def _record_reply(self, group_id: int) -> None:
         """Record a reply for cooldown and period tracking."""
         self.last_reply_time[group_id] = time.time()

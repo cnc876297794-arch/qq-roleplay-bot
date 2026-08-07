@@ -1,4 +1,4 @@
-﻿# QQ Roleplay Bot
+# QQ Roleplay Bot
 
 > 基于 NoneBot2 + NapCat + DeepSeek 的 AI 角色扮演 QQ 群聊机器人框架
 

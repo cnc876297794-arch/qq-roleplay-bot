@@ -7,8 +7,8 @@ database.py - 异步 SQLite 数据库模块
 
 import json
 import time
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Optional
 
 import aiosqlite
@@ -546,7 +546,7 @@ async def update_member_stats(
 async def get_member_profile(
     group_id: int,
     user_id: int,
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """获取单个成员画像"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -809,7 +809,7 @@ async def add_member_snapshot(
 async def get_member_memory(
     group_id: int,
     user_id: int,
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """获取成员记忆（含滚动消息 + 快照）"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -880,7 +880,7 @@ async def wake_member_memory(group_id: int, user_id: int) -> None:
 async def get_member_memory_summary(
     group_id: int,
     user_id: int,
-) -> Optional[str]:
+) -> str | None:
     """获取成员记忆的简要文本摘要（用于注入 AI 上下文）"""
     mem = await get_member_memory(group_id, user_id)
     if not mem or mem.get("status") != "active":
@@ -938,7 +938,7 @@ async def update_group_summary(
 
 async def get_group_profile(
     group_id: int,
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """获取群画像"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -973,7 +973,7 @@ async def upsert_user_profile(
 
 async def get_user_profile(
     user_id: int,
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """获取全局用户画像"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -1020,7 +1020,7 @@ async def update_user_profile_tags(
         await db.commit()
 
 
-async def get_user_profile_summary(user_id: int) -> Optional[str]:
+async def get_user_profile_summary(user_id: int) -> str | None:
     """获取全局用户画像的简要文本摘要（用于注入 AI 上下文）"""
     profile = await get_user_profile(user_id)
     if not profile:
@@ -1048,7 +1048,7 @@ async def get_user_profile_summary(user_id: int) -> Optional[str]:
 
 # ────────────────── 角色状态 ──────────────────
 
-async def get_role_state(group_id: int) -> Optional[dict[str, Any]]:
+async def get_role_state(group_id: int) -> dict[str, Any] | None:
     """获取某群的角色状态（不存在则返回 None）"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -1279,7 +1279,7 @@ async def get_recent_episodes_for_user(
 
 async def find_impression(
     group_id: int, user_id: int, note: str
-) -> Optional[dict[str, Any]]:
+) -> dict[str, Any] | None:
     """查找已有的某条印象笔记（精确匹配 note 文本）"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -1378,7 +1378,7 @@ async def get_user_impressions(
 
 # ────────────────── 关系模型 ──────────────────
 
-async def get_relationship(group_id: int, user_id: int) -> Optional[dict[str, Any]]:
+async def get_relationship(group_id: int, user_id: int) -> dict[str, Any] | None:
     """获取某用户的关系状态"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row

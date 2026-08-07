@@ -20,10 +20,10 @@ config.py - Bot 配置管理模块
     }
 """
 
-from pathlib import Path
-from typing import Any
 import json
 import re
+from pathlib import Path
+from typing import Any
 
 import yaml
 
@@ -74,7 +74,7 @@ class BotConfig:
         """从 YAML 重新加载配置，并加载角色卡"""
         # 加载 YAML
         try:
-            with open(_CONFIG_PATH, "r", encoding="utf-8") as f:
+            with open(_CONFIG_PATH, encoding="utf-8") as f:
                 self._data = yaml.safe_load(f) or {}
         except FileNotFoundError:
             self._data = {}
@@ -98,7 +98,7 @@ class BotConfig:
             path = _CONFIG_PATH.parent.parent / path
 
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 self._character_card = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             self._character_card = {}

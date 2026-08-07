@@ -237,13 +237,13 @@ def extract_keywords(text: str, top_k: int = 10) -> list[str]:
     clean = re.sub(r'\[.*?\]', '', clean)  # 去除[图片][表情]等
     clean = re.sub(r'https?://\S+', '', clean)  # 去除链接
     clean = re.sub(r'[^\w\u4e00-\u9fff]+', ' ', clean)  # 保留中英文和数字
-    
+
     if not clean.strip():
         return []
-    
+
     words = jieba.cut(clean)
     word_count = Counter()
-    
+
     for w in words:
         w = w.strip()
         if len(w) < 2:
@@ -251,7 +251,7 @@ def extract_keywords(text: str, top_k: int = 10) -> list[str]:
         if w in _STOP_WORDS:
             continue
         word_count[w] += 1
-    
+
     return [w for w, _ in word_count.most_common(top_k)]
 
 
@@ -285,21 +285,21 @@ def analyze_message(text: str) -> dict:
 
 
 async def process_group_message(group_id: int, user_id: int, message_id: int,
-                                 content: str, nickname: str) -> Optional[dict]:
+                                 content: str, nickname: str) -> dict | None:
     """
     处理一条群聊消息（0 token消耗）。
-    
+
     1. 存入SQLite
     2. 更新成员档案基础统计
     3. 返回消息分析结果
     """
     # 分析消息
     analysis = analyze_message(content)
-    
+
     # 存入数据库
     msg_type = analysis["message_type"]
     await db.save_message(group_id, user_id, message_id, content, msg_type, nickname)
-    
+
     # 更新成员档案
     await db.upsert_member_profile(group_id, user_id, nickname)
     await db.update_member_stats(
@@ -308,7 +308,7 @@ async def process_group_message(group_id: int, user_id: int, message_id: int,
         words=analysis["word_count"],
         punctuation_count=analysis["punctuation_count"]
     )
-    
+
     return analysis
 
 

@@ -55,7 +55,7 @@ async def generate_snapshot(
     user_id: int,
     nickname: str,
     ai_client,
-) -> Optional[str]:
+) -> str | None:
     """
     为某个成员生成一条记忆快照。
     读取最近消息 → AI 总结 → 写入数据库。
@@ -102,7 +102,8 @@ async def process_pending_snapshots(group_id: int, ai_client, max_users: int = 5
     处理所有需要快照的成员（msg_since_snapshot >= 5）。
     """
     import aiosqlite
-    from .database import DB_PATH, _SNAPSHOT_TRIGGER
+
+    from .database import _SNAPSHOT_TRIGGER, DB_PATH
 
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -134,6 +135,7 @@ async def process_all_groups_snapshots(ai_client, max_users_per_group: int = 3) 
     遍历所有有活跃消息的群，处理待快照成员。
     """
     import aiosqlite
+
     from .database import DB_PATH
 
     try:

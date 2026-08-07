@@ -1,8 +1,9 @@
 """DeepSeek API client with token budget control for the roleplay plugin."""
 
-import httpx
 import json
 import time
+
+import httpx
 
 # 使用 nonebot 的全局 logger，确保日志被框架正确格式化输出
 try:
@@ -66,7 +67,7 @@ class TokenBudget:
 
 class AIClient:
     """Async client for DeepSeek Chat Completions API with budget tracking."""
-    
+
     def __init__(self, api_key: str, api_base: str, model: str = "deepseek-v4-flash",
                  max_tokens: int = 500, temperature: float = 0.7,
                  reply_budget: int = 30000, learning_budget: int = 10000,
@@ -164,7 +165,7 @@ class AIClient:
         result = re.sub(r'\s+', ' ', result)
 
         return result.strip()
-        
+
     async def chat(self, messages: list[dict], max_tokens: int | None = None,
                    temperature: float | None = None,
                    frequency_penalty: float | None = None,
@@ -264,7 +265,7 @@ class AIClient:
         except Exception as e:
             logger.error(f"[AIClient Error] {e}")
             return ""
-    
+
     async def chat_for_learning(self, messages: list[dict]) -> tuple[str, int]:
         """
         Optimized chat for learning tasks with lower temperature and max tokens.

@@ -80,7 +80,7 @@ async def init_admin_tables() -> None:
 
 # ─── 群设置 ───────────────────────────────────
 
-async def get_group_settings(group_id: int) -> Optional[dict[str, Any]]:
+async def get_group_settings(group_id: int) -> dict[str, Any] | None:
     """获取群管理设置"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row
@@ -179,7 +179,7 @@ async def remove_keyword(group_id: int, keyword: str) -> None:
         await db.commit()
 
 
-async def check_keyword_match(group_id: int, text: str) -> Optional[dict[str, Any]]:
+async def check_keyword_match(group_id: int, text: str) -> dict[str, Any] | None:
     """检查文本是否匹配关键词，返回匹配的关键词规则"""
     keywords = await get_group_keywords(group_id)
     for kw in keywords:
@@ -195,9 +195,9 @@ async def log_admin_action(
     admin_id: int,
     admin_role: str,
     action: str,
-    target_id: Optional[int] = None,
-    duration: Optional[int] = None,
-    reason: Optional[str] = None,
+    target_id: int | None = None,
+    duration: int | None = None,
+    reason: str | None = None,
 ) -> None:
     """记录管理操作日志"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
@@ -226,7 +226,7 @@ async def get_active_members_rank(group_id: int, limit: int = 10) -> list[dict[s
         return [dict(r) for r in rows]
 
 
-async def get_member_profile(group_id: int, user_id: int) -> Optional[dict[str, Any]]:
+async def get_member_profile(group_id: int, user_id: int) -> dict[str, Any] | None:
     """获取成员画像（复用 roleplay 的表）"""
     async with aiosqlite.connect(str(DB_PATH)) as db:
         db.row_factory = aiosqlite.Row

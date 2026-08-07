@@ -26,19 +26,21 @@ from datetime import datetime, timedelta
 from typing import Any, Optional
 
 from . import database as db
+
+# 关键：必须用 nonebot.log.logger 而非 logging.getLogger(__name__)，
+# 否则子 logger 会被 nonebot 默认设到 WARNING，logger.info() 全部被过滤。
+# 与 plugins/roleplay/__init__.py:21 保持一致。
+# 注意：必须在 config import 之前定义，否则下面 try/except 里的 logger.warning() 会 NameError
+try:
+    from nonebot.log import logger
+except Exception:  # 测试环境 fallback
+    logger = logging.getLogger(__name__)
+
 try:
     from .config import BotConfig
 except Exception:  # 单独 import 时（如测试）bot_config 不可用
     BotConfig = None
     logger.warning("[consciousness] config 模块加载失败，将使用空配置")
-
-# 关键：必须用 nonebot.log.logger 而非 logging.getLogger(__name__)，
-# 否则子 logger 会被 nonebot 默认设到 WARNING，logger.info() 全部被过滤。
-# 与 plugins/roleplay/__init__.py:21 保持一致。
-try:
-    from nonebot.log import logger
-except Exception:  # 测试环境 fallback
-    logger = logging.getLogger(__name__)
 
 
 # ══════════════════════════════════════════════
@@ -125,7 +127,7 @@ async def extract_event(
     content: str,
     ai_client,
     raw_context: list[dict] | None = None,
-) -> Optional[dict]:
+) -> dict | None:
     """
     调用 AI 从一条消息中提取结构化事件。
     Returns: {"is_noteworthy": bool, "event_type": str, "summary": str,
@@ -264,7 +266,7 @@ async def write_episode_from_event(
     nickname: str,
     event: dict,
     raw_context: list[dict] | None = None,
-) -> Optional[int]:
+) -> int | None:
     """
     把事件写入情景记忆，并级联触发印象演化和关系更新。
     Returns: 写入的 episode id，失败返回 None。
@@ -658,7 +660,7 @@ async def maybe_proactive(
     group_id: int,
     ai_client,
     bot,
-) -> Optional[str]:
+) -> str | None:
     """
     每 30 分钟调用一次。决定是否主动说话，并返回要发送的消息文本。
     返回 None 表示不主动说。
@@ -721,7 +723,7 @@ async def _generate_proactive_message(
     group_id: int,
     state: dict,
     ai_client,
-) -> Optional[str]:
+) -> str | None:
     """生成主动发言的文本（基于当前状态和群情况）"""
     # 场景 1：群里冷清（很久没人说话）
     # 注：get_recent_messages 是 DESC（新→旧），所以 [0] 是最新、[-1] 是最旧
@@ -943,7 +945,7 @@ class ConsciousState:
         self.ai_client = ai_client
 
     async def on_message(self, group_id: int, user_id: int, nickname: str,
-                         content: str, raw_context: list[dict] | None = None) -> Optional[int]:
+                         content: str, raw_context: list[dict] | None = None) -> int | None:
         """
         每条群消息进来时调用：节流 + 提取 + 写入。
         Returns: 写入的 episode id（如果成功），否则 None
@@ -991,7 +993,7 @@ class ConsciousState:
         )
         return slow, fast
 
-    async def maybe_proactive(self, group_id: int, bot) -> Optional[str]:
+    async def maybe_proactive(self, group_id: int, bot) -> str | None:
         """尝试主动说话，返回要发的文本（或 None）"""
         if not is_consciousness_enabled():
             return None

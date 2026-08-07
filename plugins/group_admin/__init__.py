@@ -14,16 +14,14 @@ group_admin 插件 - QQ群管理员功能
 """
 
 from nonebot import on_command
-from nonebot.adapters.onebot.v11 import (
-    Bot, GroupMessageEvent
-)
-from nonebot.params import CommandArg
+from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 from nonebot.log import logger
+from nonebot.params import CommandArg
 
-from .permission import require_admin, can_target
-from .utils import extract_at_users, format_duration
-from .config import AdminConfig
 from . import database as db
+from .config import AdminConfig
+from .permission import can_target, require_admin
+from .utils import extract_at_users, format_duration
 
 # ─── 初始化 ───────────────────────────────────
 config = AdminConfig()
@@ -132,7 +130,7 @@ async def handle_ban_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("ban"):
         await bot.send(event, "❌ 禁言功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -175,7 +173,7 @@ async def handle_unban_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("ban"):
         await bot.send(event, "❌ 禁言功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -211,7 +209,7 @@ async def handle_kick_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("kick"):
         await bot.send(event, "❌ 踢出功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -251,7 +249,7 @@ async def handle_whole_ban_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("whole_ban"):
         await bot.send(event, "❌ 全员禁言功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -278,7 +276,7 @@ async def handle_whole_unban_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("whole_ban"):
         await bot.send(event, "❌ 全员禁言功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -305,7 +303,7 @@ async def handle_delete_msg_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("delete_msg"):
         await bot.send(event, "❌ 撤回功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -441,7 +439,7 @@ async def handle_bot_on_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("bot_control"):
         await bot.send(event, "❌ Bot控制功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -459,7 +457,7 @@ async def handle_bot_off_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("bot_control"):
         await bot.send(event, "❌ Bot控制功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -477,7 +475,7 @@ async def handle_bot_prob_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("bot_control"):
         await bot.send(event, "❌ Bot控制功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -510,7 +508,7 @@ async def handle_bot_status_cmd(bot: Bot, event: GroupMessageEvent, args: str):
 
         status = "开启" if enabled else "关闭"
         lines = [
-            f"🤖 Bot 状态",
+            "🤖 Bot 状态",
             f"自动回复: {status}",
             f"回复概率: {prob*100:.0f}%",
         ]
@@ -525,7 +523,7 @@ async def handle_keyword_cmd(bot: Bot, event: GroupMessageEvent, args: str):
     if not config.is_feature_enabled("keyword_filter"):
         await bot.send(event, "❌ 关键词过滤功能未开启")
         return
-    
+
     if not require_admin_check(event):
         await bot.send(event, "❌ 权限不足，仅群主/管理员可执行此操作")
         return
@@ -608,14 +606,14 @@ def parse_duration(text: str) -> int:
     import re
     if not text:
         return 600
-    
+
     text = text.strip().lower()
     match = re.match(r'^(\d+)([smhd])$', text)
     if not match:
         if text.isdigit():
             return int(text) * 60
         return 600
-    
+
     num, unit = int(match.group(1)), match.group(2)
     multipliers = {'s': 1, 'm': 60, 'h': 3600, 'd': 86400}
     return num * multipliers.get(unit, 60)

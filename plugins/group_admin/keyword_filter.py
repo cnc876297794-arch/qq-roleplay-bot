@@ -9,8 +9,8 @@ from nonebot import on_message
 from nonebot.adapters.onebot.v11 import Bot, GroupMessageEvent
 from nonebot.log import logger
 
-from .config import AdminConfig
 from . import database as db
+from .config import AdminConfig
 
 config = AdminConfig()
 
@@ -114,7 +114,7 @@ async def handle_keyword_filter(bot: Bot, event: GroupMessageEvent):
                 # 静默撤回，不发送提示（避免刷屏）
                 pass
             else:
-                logger.warning(f"[KeywordFilter] 撤回失败，未发送提示")
+                logger.warning("[KeywordFilter] 撤回失败，未发送提示")
 
         elif action == "ban":
             if ban_success:
