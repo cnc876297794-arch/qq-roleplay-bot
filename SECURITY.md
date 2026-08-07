@@ -1,11 +1,11 @@
-# 安全策略
+﻿# 安全策略
 
 ## 报告漏洞
 
 如果你发现本项目存在安全漏洞，**请不要在公开 Issue 中披露**。
 
 请通过 GitHub Security Advisories 私下联系维护者：
-👉 https://github.com/yourname/qq-roleplay-bot/security/advisories/new
+👉 https://github.com/cnc876297794-arch/qq-roleplay-bot/security/advisories/new
 
 请在报告中包含：
 - 漏洞类型与影响范围

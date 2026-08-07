@@ -1,4 +1,4 @@
-# QQ Roleplay Bot
+﻿# QQ Roleplay Bot
 
 > 基于 NoneBot2 + NapCat + DeepSeek 的 AI 角色扮演 QQ 群聊机器人框架
 
@@ -104,7 +104,7 @@
 
 ```bash
 # 1. 克隆仓库
-git clone https://github.com/yourname/qq-roleplay-bot.git
+git clone https://github.com/cnc876297794-arch/qq-roleplay-bot.git
 cd qq-roleplay-bot
 
 # 2. 安装 Python 依赖

@@ -1,0 +1,12 @@
+﻿# 强制 shell 脚本保持 LF 行尾,避免 Windows checkout 时被改成 CRLF 导致脚本无法执行
+*.sh        text eol=lf
+*.bash      text eol=lf
+
+# Python 源码统一 LF
+*.py        text eol=lf
+
+# 配置文件统一 LF
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.toml      text eol=lf
+*.md        text eol=lf

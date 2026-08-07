@@ -1,4 +1,4 @@
-[build-system]
+﻿[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
@@ -37,8 +37,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourname/qq-roleplay-bot"
-Issues = "https://github.com/yourname/qq-roleplay-bot/issues"
+Homepage = "https://github.com/cnc876297794-arch/qq-roleplay-bot"
+Issues = "https://github.com/cnc876297794-arch/qq-roleplay-bot/issues"
 
 [tool.nonebot]
 plugins = []
