@@ -7,7 +7,7 @@ name = "qq-roleplay-bot"
 version = "0.1.0"
 description = "AI 角色扮演 QQ 群聊机器人，基于 NoneBot2 + NapCat + DeepSeek"
 readme = "README.md"
-license = { text = "MIT" }
+license = "MIT"
 requires-python = ">=3.10"
 authors = [
   { name = "qq-roleplay-bot contributors" }
@@ -17,7 +17,6 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Framework :: AsyncIO",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: POSIX :: Linux",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
@@ -44,6 +43,13 @@ Issues = "https://github.com/cnc876297794-arch/qq-roleplay-bot/issues"
 plugins = []
 plugin_dirs = ["plugins"]
 builtin_plugins = ["echo"]
+
+[tool.setuptools.packages.find]
+# 仓库是 flat-layout,根目录有 qqbot/config/plugins 三个目录
+# 显式告诉 setuptools 只打包这两个 Python 包
+# config/ 是 YAML 配置,不入包
+include = ["qqbot*", "plugins*"]
+exclude = ["config*", "characters*", "data*", "docs*", "napcat*"]
 
 
 [tool.ruff]
