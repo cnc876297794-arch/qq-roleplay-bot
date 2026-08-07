@@ -1,0 +1,91 @@
+# ───── 敏感信息与本地配置（绝不入仓）─────
+.env
+.env.local
+*.pem
+*.key
+secrets/
+
+# ───── 角色卡与私有数据 ─────
+characters/
+data/
+reports/
+
+# ───── OneBot / NapCat 运行时产物 ─────
+onebot11_config.json
+napcat_data/
+napcat_workdir/
+napcat_launcher/
+Napcat/
+napcat/
+lagrange/
+native/
+worker/
+static/
+*.dll
+*.exe
+*.bat
+*.so
+*.dylib
+
+# ───── 启动脚本依赖的二进制（脚本会从官方源下载）─────
+go-cqhttp
+jq
+napcat.mjs
+conout-*.js
+loadNapCat.js
+appsettings.json
+qqnt.json
+qrcode*.png
+
+# ───── 日志与临时 ─────
+*.log
+*.log.*
+bot_start.log
+bot.log
+napcat.log
+napcat_console.log
+.tmp/
+.pilotdeck/
+.last_llm_prompt.json
+
+# ───── Python 产物 ─────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# ───── Node 产物 ─────
+node_modules/
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ───── IDE 与编辑器 ─────
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ───── 备份文件 ─────
+*.bak
+*.bak.*
+*.backup
+*.old
+*~

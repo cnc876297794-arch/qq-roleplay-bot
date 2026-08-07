@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qq-roleplay-bot"
+version = "0.1.0"
+description = "AI 角色扮演 QQ 群聊机器人，基于 NoneBot2 + NapCat + DeepSeek"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+  { name = "qq-roleplay-bot contributors" }
+]
+keywords = ["qq", "nonebot2", "napcat", "roleplay", "ai", "deepseek", "onebot"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Communications :: Chat",
+]
+
+# ─── 运行依赖 ───
+dependencies = [
+  "nonebot2>=2.4.0",
+  "nonebot-adapter-onebot>=2.4.0",
+  "nonebot-plugin-apscheduler>=0.5.0",
+  "httpx>=0.27.0",
+  "pyyaml>=6.0",
+  "aiosqlite>=0.20.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourname/qq-roleplay-bot"
+Issues = "https://github.com/yourname/qq-roleplay-bot/issues"
+
+[tool.nonebot]
+plugins = []
+plugin_dirs = ["plugins"]
+builtin_plugins = ["echo"]

@@ -1,0 +1,29 @@
+# =============================================================================
+# group_admin 插件配置模板
+# =============================================================================
+# 使用方法：  cp config/admin.yaml.example config/admin.yaml
+# =============================================================================
+
+enabled: true
+
+# ───── 功能开关 ─────
+features:
+  ban: true              # 禁言
+  kick: true             # 踢出
+  whole_ban: true        # 全员禁言
+  delete_msg: true       # 撤回消息
+  keyword_filter: true   # 关键词过滤
+  stats: true            # 数据统计
+  bot_control: true      # Bot 控制
+
+# ───── 关键词过滤 ─────
+keyword_filter:
+  action: "ban"          # ban（禁言） / delete（撤回） / warn（警告）
+  ban_duration: 600      # 默认禁言时长（秒）
+  keywords: []           # 默认空，通过命令动态管理
+
+# ───── 默认权限 ─────
+default_permissions:
+  admin_can_ban: true
+  admin_can_kick: true
+  admin_can_whole_ban: true

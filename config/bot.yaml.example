@@ -1,0 +1,102 @@
+# =============================================================================
+# QQ Roleplay Bot - 主配置文件模板
+# =============================================================================
+# 使用方法：
+#   1. 复制本文件：  cp config/bot.yaml.example config/bot.yaml
+#   2. 按需修改配置项（api_key 留空，使用环境变量 DEEPSEEK_API_KEY）
+#   3. 角色卡请放到 characters/<your_character>.json（SillyTavern V2 格式）
+# =============================================================================
+
+# 角色卡路径（指向 characters/ 下的 SillyTavern V2 角色卡 JSON 文件）
+character_card: "characters/your_character.json"
+
+# ───── 群聊行为（基础层）─────
+character:
+  group_behavior:
+    reply_probability: 0.02      # 非 @ 随机插话概率（0.0 ~ 1.0）
+    reply_cooldown: 30           # 非 @ 概率触发的群级冷却（秒）
+    at_debounce: 2               # @ 触发防抖（同一群内同一用户，秒）
+    max_daily_replies: 200       # 每群每日最大主动回复数
+    refresh_times: [8, 12, 18]   # 每日配额刷新时间点（24 小时制）
+    learn_from_chat: true        # 是否从群聊中学习
+
+# ───── AI 配置 ─────
+ai:
+  # 留空即可，运行时优先从环境变量 DEEPSEEK_API_KEY 读取
+  # yaml 中提供值仅为本地调试，生产环境务必用环境变量
+  api_key: ""
+
+  api_base: "https://api.deepseek.com"
+  model: "deepseek-v4-flash"
+  max_tokens: 200
+  temperature: 0.85
+
+  # Token 预算分离：群聊回复与后台学习各自独立计数
+  reply_budget: 30000
+  learning_budget: 10000
+
+  # ─── DeepSeek 思考模式（thinking mode）───
+  # 官方文档：https://api-docs.deepseek.com/zh-cn/guides/thinking_mode
+  # 注意：开启后 temperature / top_p / frequency_penalty / presence_penalty
+  #       会"不报错但不生效"（官方原话）
+  thinking:
+    enabled: false               # 总开关（首次部署建议先关，调通后再开）
+    reasoning_effort: "high"     # "high" / "max"；"max" 消耗更高但思考更深
+    max_tokens: 2000             # 思考模式输出更长，必须放宽上限
+    strip_reasoning_from_log: false  # 是否在日志里隐藏 reasoning_content
+
+# ───── 群聊配置（按群覆盖）─────
+# 基础键 default 提供兜底值；具体群号作为顶层 key 可覆盖同名字段
+groups:
+  default:
+    enabled: true
+    learn_mode: true
+    reply_probability: 0.02
+    # 示例：为某个高活跃度群组提高插话频率
+  # "100000001":
+  #   enabled: true
+  #   learn_mode: true
+  #   reply_probability: 0.10
+
+# ───── 学习配置（后台任务）─────
+learning:
+  topic_update_interval: 1800          # 话题刷新间隔（秒）
+  personality_update_interval: 3600    # 性格分析间隔（秒）
+  message_retention_days: 7            # 消息保留天数
+  batch_size: 50
+
+# ───── 意识层（角色持续状态）─────
+consciousness:
+  enabled: true
+
+  # 事件提取（从群聊中抽取情景记忆）
+  event_extraction:
+    enabled: true
+    min_msg_length: 5
+    cooldown_seconds: 300
+    trigger_keywords: ["@", "?", "？", "喜欢", "讨厌", "记得", "昨天", "上次"]
+
+  # 记忆衰减
+  memory_decay:
+    enabled: true
+    interval_hours: 6
+    forget_threshold: 0.1
+    half_life_days: 30
+    max_age_days: 60
+
+  # 复盘（每日凌晨整理状态）
+  reflection:
+    enabled: true
+    cron: "0 4 * * *"
+    quiet_hours_required: 2
+    max_episodes_per_reflection: 20
+
+  # 主动发起（机器人自发消息）
+  proactive:
+    enabled: true
+    min_interval_minutes: 10
+    daily_max: 20
+    quiet_hours: [0, 7]
+    base_probability: 0.05
+    idle_threshold_hours: 2
+    missing_friend_hours: 24
