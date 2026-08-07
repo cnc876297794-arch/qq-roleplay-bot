@@ -33,6 +33,7 @@ dependencies = [
   "httpx>=0.27.0",
   "pyyaml>=6.0",
   "aiosqlite>=0.20.0",
+  "jieba>=0.42.1",  # 中文分词,topic_tracker / message_processor 用
 ]
 
 [project.urls]
