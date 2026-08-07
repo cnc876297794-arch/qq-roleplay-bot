@@ -34,6 +34,10 @@ dependencies = [
   "pyyaml>=6.0",
   "aiosqlite>=0.20.0",
   "jieba>=0.42.1",  # 中文分词,topic_tracker / message_processor 用
+  # NoneBot driver 依赖 (.env DRIVER=~fastapi+~aiohttp)
+  "fastapi>=0.110.0",  # nonebot2[fastapi] extra 的核心
+  "uvicorn[standard]>=0.27.0",  # ASGI 服务器
+  "aiohttp>=3.9.0",  # httpx 之外的另一种 WebClient(给 aiohttp driver 用)
 ]
 
 [project.urls]
